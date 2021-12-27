@@ -1,0 +1,18 @@
+
+spring:
+  application:
+    name: cloud-gw
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user-service/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: user-service
+#                fallbackUri: forward:/fallback/accountFallback
+#            - name: AccountPreFilter
+#            - name: AccountPostFilter
