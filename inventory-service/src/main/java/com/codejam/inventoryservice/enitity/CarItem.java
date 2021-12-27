@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class CarItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     @ManyToOne
     private Car car;
     private String vehicleNumber;

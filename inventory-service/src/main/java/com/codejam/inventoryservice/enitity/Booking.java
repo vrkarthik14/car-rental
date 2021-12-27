@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +21,8 @@ public class Booking {
     private CarItem carItem;
     private Long booking_id;
     private String booking_status;
-
+    private Date toDate;
+    private Date fromDate;
+    private float amount;
 
 }

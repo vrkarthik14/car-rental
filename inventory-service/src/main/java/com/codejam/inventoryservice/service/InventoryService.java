@@ -2,12 +2,18 @@ package com.codejam.inventoryservice.service;
 
 import com.codejam.inventoryservice.InventoryDto.OnboardingRequest;
 import com.codejam.inventoryservice.InventoryDto.OnboardingResponse;
+import com.codejam.inventoryservice.InventoryDto.SearchRequest;
+import com.codejam.inventoryservice.InventoryDto.SearchResponse;
 import com.codejam.inventoryservice.enitity.*;
 import com.codejam.inventoryservice.repository.*;
 import com.codejam.inventoryservice.utils.BUSINESS_CONSTANTS;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.awt.print.Book;
+import java.security.Security;
+import java.util.List;
 
 @Service
 public class InventoryService {
@@ -26,6 +32,9 @@ public class InventoryService {
 
     @Autowired
     private CarItemRepository carItemRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     public OnboardingResponse onboardNewCar(OnboardingRequest request) {
         //Garage
@@ -60,5 +69,12 @@ public class InventoryService {
         return onboardingResponse;
     }
 
+    public SearchResponse searchAvailableCars(SearchRequest request){
+        List<CarItem> cars=  carItemRepository.findAvailableCar(request.getModelType(),request.getBrand());
+        for( CarItem car: cars){
+             List<Booking> booked_slots= bookingRepository.findBookingByCar(car.getId());
+
+        }
+    }
 
 }
