@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
 import java.security.Security;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,7 +55,7 @@ public class InventoryService {
             carRepository.save(Car.builder().modelType(request.getModel()).build());
 
         //CarItem
-        CarItem carItem = carItemRepository.findByVehicleNumber(request.getVehicle_no());
+        CarItem carItem = carItemRepository.findByVehiclNo(request.getVehicle_no());
         if(null == carItem)
             carItemRepository.save(CarItem.builder()
                     .car(car)
@@ -71,10 +72,15 @@ public class InventoryService {
 
     public SearchResponse searchAvailableCars(SearchRequest request){
         List<CarItem> cars=  carItemRepository.findAvailableCar(request.getModelType(),request.getBrand());
+        List<CarItem> availableCars=null;
         for( CarItem car: cars){
-             List<Booking> booked_slots= bookingRepository.findBookingByCar(car.getId());
-
+             List<Booking> booked_slots= bookingRepository.findBookingByCar(car.getId(),request.getFromDate(),request.getToDate());
+             if(null==booked_slots){
+                 availableCars.add(car);
+              }
         }
+    SearchResponse searchResponse= new SearchResponse(availableCars);
+        return searchResponse;
     }
 
 }
