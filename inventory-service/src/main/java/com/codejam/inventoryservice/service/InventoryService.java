@@ -1,9 +1,6 @@
 package com.codejam.inventoryservice.service;
 
-import com.codejam.inventoryservice.InventoryDto.OnboardingRequest;
-import com.codejam.inventoryservice.InventoryDto.OnboardingResponse;
-import com.codejam.inventoryservice.InventoryDto.SearchRequest;
-import com.codejam.inventoryservice.InventoryDto.SearchResponse;
+import com.codejam.inventoryservice.InventoryDto.*;
 import com.codejam.inventoryservice.enitity.*;
 import com.codejam.inventoryservice.repository.*;
 import com.codejam.inventoryservice.utils.BUSINESS_CONSTANTS;
@@ -82,5 +79,19 @@ public class InventoryService {
     SearchResponse searchResponse= new SearchResponse(availableCars);
         return searchResponse;
     }
+
+    public boolean isAvailable(AvailRequest request) {
+        CarItem car = carItemRepository.getOne(request.getCarItemId());
+
+        List<Booking> booked_slots = bookingRepository.findBookingByCar(car.getId(), request.getFromDate(), request.getToDate());
+
+        if (null == booked_slots) {
+            return true;
+        }
+        return false;
+       }
+
+
+
 
 }

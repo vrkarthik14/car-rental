@@ -1,7 +1,6 @@
 package com.codejam.inventoryservice.controller;
 
-import com.codejam.inventoryservice.InventoryDto.OnboardingRequest;
-import com.codejam.inventoryservice.InventoryDto.OnboardingResponse;
+import com.codejam.inventoryservice.InventoryDto.*;
 import com.codejam.inventoryservice.service.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +22,15 @@ public class InventoryController {
     }
 
     @GetMapping("/searchCar")
-    public String SearchCar(OnboardingRequest request){
-        inventoryService.onboardNewCar(request);
-        return "Successfully onboarded!!!";
+    public SearchResponse SearchCar(SearchRequest request){
+        SearchResponse searchResponse = inventoryService.searchAvailableCars(request);
+        return  searchResponse;
+    }
+
+    @GetMapping("/available")
+    public AvailResponse AvailableCar(AvailRequest request){
+        AvailResponse response = new AvailResponse();
+       response.setAvailable(inventoryService.isAvailable(request)) ;
+        return  response;
     }
 }
